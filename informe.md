@@ -105,6 +105,7 @@ DEBUG=myapp:* npm start
 set DEBUG=myapp:* & npm start
 ```
 
+És recomenable utilitzar un gitignore en cas de fer servir el sistema de control de versions git. 
 
 
 # Referències
