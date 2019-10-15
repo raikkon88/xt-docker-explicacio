@@ -140,6 +140,99 @@ set DEBUG=myapp:* & npm start
 
 És recomenable utilitzar un gitignore en cas de fer servir el sistema de control de versions git. 
 
+Podem posar en marxa l'aplicació web creada mitjançant l'instrucció :
+
+```
+npm start 
+```
+
+Veiem el resultat : 
+
+![Aplicació en marxa sota domini localhost:3000](img/c1.png)
+
+# Creació d'imatges.
+
+Docker fa ús d'un fitxer anomenat Dockerfile. Aquest fitxer estipula de quina manera ha de ser la imatge que es vol crear, és a dir, s'hi estipulen un seguit d'instruccions que han de reatlizar els contenidors quan es posen en marxa per tal de tenir totes les dependències necessàries per poder arrencar. Muntem el fitxer i tot seguit descriurem cada una de les instruccions que incorpora, s'ha seguit la referència [6]. 
+
+## Dockerfile
+
+En el meu cas el fitxer Dockerfile està situat a dins del directori de l'aplicació. Es situa aquí per fer que aquest fitxer també estigui seguit per el controlador de versions de codi, d'aquesta manera, només amb accés al controlador de versions (git) ja en fem prou per posar-lo en marxa. 
+
+```
+FROM node:10
+
+# Create app directory
+WORKDIR /usr/src/app
+
+# Install app dependencies
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+# where available (npm@5+)
+COPY package*.json ./
+
+# Install all dependencies
+RUN npm install
+
+# Bundle app source
+COPY . .
+
+EXPOSE 3000
+CMD [ "node", "app.js" ]
+```
+
+**Descripció de les instruccions.**
+
+Se li assigna a la imatge quin és el llenguatge de programació que farà servir. Docker té un conjunt de repositoris preparats per descarregar-se els llenguatges de programació que es faran servir dins dels contenidors que s'executin a partir d'aquesta imatge. 
+
+```
+FROM node:10
+```
+
+Com que docker quan engega un contenidor només incorpora la informació bàsica i no hi a creat cap arbre de directoris, s'ha d'especificar a quin directori volem que es monti l'aplicació. Mitjançant la següent instrucció, el contenidor sap que ha de crear aquest directori. 
+
+```
+WORKDIR /usr/src/app
+```
+
+Se li diu a la imatge que quan el contenidor es posi en marxa, copii el fitxer de dependències de l'aplicació real a dins del dicrectori de treball del docker (el directori que hem assignat a la instrucció anterior). S'ha de fer així per què docker no té accés als directoris de la màquina host, només té accés al seu arbre de directoris. 
+
+```
+# Install app dependencies
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+# where available (npm@5+)
+COPY package*.json ./
+```
+
+Se li mana a docker que instal·li totes les dependències que hi ha al fitxer package*.json (package.json i package-lock.json). La instrucció RUN fa una execució d'un script, en aquest cas l'script és "npm install".
+
+```
+RUN npm install
+```
+
+Se li diu a la imatge que la informació que el codi que ha de fer servir és el codi que hi ha al directori actual on hi ha el Dockerfile. Concretament la següent instrucció diu : Copia el contingut del directori on hi ha el dockerfil de la màquina Host a dins del directori de treball del docker.
+
+```
+COPY . .
+```
+
+Un cop tot està en marxa, s'ha de dir a docker que inicialitzit l'aplicació, per fer-ho li assignem el port per on ha d'exposar l'aplicació i tot seguit s'executa mitjançant la instrucció CMD la instrucció node (prèviament instal·lada) i el fitxer que ves vol executar (que se li passa per paràmetre a la instrucció node). 
+
+```
+EXPOSE 3000
+CMD [ "node", "app.js" ]
+```
+
+Pot passar que no ens insteressi que el contenidor obtingui certes parts del nostre codi. Per excloure fitxers de les intruccions del docker s'utilitza el .dockerignore. On hi posem el següent contingut : 
+
+```
+node_modules
+npm-debug.log
+```
+
+## Creació de la imatge
+
+Un cop ja hem configurat el nostre Dockerfile, és a dir, un cop hem descrit com ha de ser i què ha de fer el nostre contenidor, hem de crear la imatge que utilitzarem per poder posar en marxa instàncies del mateix. 
+
+
 
 
 
@@ -151,3 +244,4 @@ set DEBUG=myapp:* & npm start
 - [4] : [Docs Docker Container](https://docs.docker.com/engine/reference/commandline/container/)
 - [5] : [Docker Network](https://docs.docker.com/v17.09/engine/userguide/networking/)
 - [6] : [Cómo instalar y usar docker en Ubuntu 18.04](https://www.digitalocean.com/community/tutorials/como-instalar-y-usar-docker-en-ubuntu-18-04-1-es)
+- [7] : [Dockerizing node application](https://nodejs.org/de/docs/guides/nodejs-docker-webapp/)
