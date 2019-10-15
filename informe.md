@@ -52,6 +52,39 @@ A continuació seguirem l'explicació dels contenidors mitjançant el learning b
 
 # Instal·lació docker en ubuntu 18.04
 
+Afegim la clau GPG per a apuntar el mirror de docker referent a ubuntu i afegim el mirall. 
+
+```
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+sudo apt update 
+sudo apt install docker-ce
+```
+
+Docker actúa com a servei i podem consultar el seu estat mitjançant systemctl. 
+
+```
+sudo systemctl status docker
+```
+
+## Configuració de permissos per docker. 
+
+Per defecte docker utiltiza funcions del sistema que un usuari no està autoritzat a executar, per solucionar-ho de la manera més eficient s'ha d'afegir el nostre usuari local al grup de docker (generat a partir de la instal·lació). D'aquesta manera el nostre usuari podrà executar les funcions bàsiques de docker sonse haver d'utilitzar la instrucció sudo. 
+
+```
+sudo usermod -aG docker ${USER}
+su - ${USER}
+```
+
+Comprovem que el nostre usuari pertany al grup de docker
+
+```
+id -nG
+```
+
+Ja està tot preparat per a la utilització de docker a la nostre màquina. 
+
+
 # Aplicació web en nodejs i express
 
 Primerament, un cop s'ha obtingut i instal·lat nodejs, ens instal·lem el generador d'aplicacions express que ens facilita la creació d'aplicacions web i la generació de l'arbre de directoris de la mateixa aplicació. 
@@ -106,6 +139,8 @@ set DEBUG=myapp:* & npm start
 ```
 
 És recomenable utilitzar un gitignore en cas de fer servir el sistema de control de versions git. 
+
+
 
 
 # Referències
