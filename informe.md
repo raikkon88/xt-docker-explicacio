@@ -82,6 +82,8 @@ Comprovem que el nostre usuari pertany al grup de docker
 id -nG
 ```
 
+**Per fer efectiu el canvi s'ha de tencar la sessió de l'usuari que acabem d'afegir al grup de docker i tornar a entrar.**
+
 Ja està tot preparat per a la utilització de docker a la nostre màquina. 
 
 
@@ -232,6 +234,80 @@ npm-debug.log
 
 Un cop ja hem configurat el nostre Dockerfile, és a dir, un cop hem descrit com ha de ser i què ha de fer el nostre contenidor, hem de crear la imatge que utilitzarem per poder posar en marxa instàncies del mateix. 
 
+Creem la imatge amb la següent instrucció. El paràmetre -t és per assignar un tag a la imatge per tal que sigui més fàcil 
+
+A partir del moment en el que hem executat la instrucció docker comença a descarregar-se les diferents dependències que requereix per funcionar. 
+
+```
+$ docker build -t narc/app .
+10: Pulling from library/node
+092586df9206: Pull complete 
+ef599477fae0: Pull complete 
+4530c6472b5d: Pull complete 
+d34d61487075: Pull complete 
+87fc2710b63f: Pull complete 
+e83c771c5387: Pull complete 
+7e2d41c53938: Pull complete 
+a51441770e67: Pull complete 
+e9542e67f971: Pull complete 
+Digest: sha256:a2bc0489b71f88b358d2ed66efe0025b1896032ca6fd52df780426ce1acd18be
+Status: Downloaded newer image for node:10
+ ---> 636ef87129d6
+Step 2/7 : WORKDIR /usr/src/app
+ ---> Running in de224ab4a96a
+Removing intermediate container de224ab4a96a
+ ---> f7876ab157e9
+Step 3/7 : COPY package*.json ./
+ ---> fa249c13c6f4
+Step 4/7 : RUN npm install
+ ---> Running in 80005fd5fc8d
+
+ > core-js@2.6.10 postinstall /usr/src/app/node_modules/core-js
+> node postinstall || echo "ignore"
+
+Thank you for using core-js ( https://github.com/zloirock/core-js ) for polyfilling JavaScript standard library!
+
+The project needs your help! Please consider supporting of core-js on Open Collective or Patreon: 
+> https://opencollective.com/core-js 
+> https://www.patreon.com/zloirock 
+
+Also, the author of core-js ( https://github.com/zloirock ) is looking for a good job -)
+
+added 115 packages from 172 contributors and audited 244 packages in 2.808s
+found 0 vulnerabilities
+
+Removing intermediate container 80005fd5fc8d
+ ---> 70e45bb98295
+Step 5/7 : COPY . .
+ ---> a54b31805fb6
+Step 6/7 : EXPOSE 3000
+ ---> Running in bae2658934cf
+Removing intermediate container bae2658934cf
+ ---> 6aec958ce86c
+Step 7/7 : CMD [ "node", "app.js" ]
+ ---> Running in b66fa2fa3bd6
+Removing intermediate container b66fa2fa3bd6
+ ---> 7d605304641e
+Successfully built 7d605304641e
+Successfully tagged narc/app:latest
+```
+
+Un cop creada la imatge es poden utiltizar les instruccions de docker per veure quines imatges hi ha disponibles. 
+
+```
+$ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+narc/app            latest              7d605304641e        5 minutes ago      918MB
+node                10                  636ef87129d6        4 weeks ago         904MB
+```
+
+Podem veure que en el nostre cas hi ha la imatge que s'ha generat. Es distingeix un image id que és utiltizat per referir-te a la mateixa, quan s'ha creat i quan d'espai ocupa. També hi podem veure una imatge anomenada node, és una image utilitzada amb anterioritat. 
+
+## Contenidors 
+
+Actualment fins al moment encara no hem generat cap instància, és a dir, no s'ha posat en marxa cap contenidor, simplement s'ha creat la imatge que conté el codi del nostre programa. Per aixecar un contenidor amb l'aplicació s'ha d0utilitzar la instrucció docker run. Podem veure informació d'aquesta instrucció a la referència [8]. 
+
+L'objectiu ara és tenir un servidor web aixecat en un port en concret del docker i que sigui capaç de contestar a les peticions web que rebi el mateix. Qui ha de contestar és l'aplicació web que conté la imatge, per tant a partir de la imatge posarem en marxa el contenidor. Ho farem mitjançant la instrucció RUN. 
 
 
 
@@ -245,3 +321,4 @@ Un cop ja hem configurat el nostre Dockerfile, és a dir, un cop hem descrit com
 - [5] : [Docker Network](https://docs.docker.com/v17.09/engine/userguide/networking/)
 - [6] : [Cómo instalar y usar docker en Ubuntu 18.04](https://www.digitalocean.com/community/tutorials/como-instalar-y-usar-docker-en-ubuntu-18-04-1-es)
 - [7] : [Dockerizing node application](https://nodejs.org/de/docs/guides/nodejs-docker-webapp/)
+- [8] : [Docker Run command and usage](https://docs.docker.com/engine/reference/commandline/run/)
