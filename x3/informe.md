@@ -1,3 +1,19 @@
+---
+title: "Docker Swarm and Docker Service"
+author: [Marc Sànchez Pifarré, GEINF (UDG-EPS)]
+date: 24/11/2019
+subject: "Udg - Eps"
+tags: [Xarxes Troncals]
+subtitle: "Tutor de la pràctica : Lluís Fàbrega"
+titlepage: true
+titlepage-color: 06386e
+titlepage-text-color: FFFFFF
+titlepage-rule-height: 4
+...
+
+
+\newpage
+
 # Objectius d'aquest document 
 
 - Comentar què son les certificacions TIER
@@ -509,9 +525,9 @@ En general s'ha utiltizat el paràmetre --help a totes les instruccions de docke
 
 # Referències 
 
-[1] - Docker Swarm : [https://docs.docker.com/engine/swarm/key-concepts/](https://docs.docker.com/engine/swarm/key-concepts/)
-[2] - Docker swarm init : [https://docs.docker.com/engine/reference/commandline/swarm_init/](https://docs.docker.com/engine/reference/commandline/swarm_init/)
-[3] - ANSI/TIA-942 : [https://en.wikipedia.org/wiki/TIA-942](https://en.wikipedia.org/wiki/TIA-942)
-[4] - Docker service Create : [https://docs.docker.com/v17.09/engine/reference/commandline/service_create/](https://docs.docker.com/v17.09/engine/reference/commandline/service_create/)
-[5] - Guia de creació de serveis docker : [https://docs.docker.com/engine/swarm/services/](https://docs.docker.com/engine/swarm/services/) 
-[6] - Sharing docker images without a registry : [https://stacktoheap.com/blog/2015/11/22/sharing-docker-images-without-registry/](https://stacktoheap.com/blog/2015/11/22/sharing-docker-images-without-registry/)
+- [1] - Docker Swarm : [https://docs.docker.com/engine/swarm/key-concepts/](https://docs.docker.com/engine/swarm/key-concepts/)
+- [2] - Docker swarm init : [https://docs.docker.com/engine/reference/commandline/swarm_init/](https://docs.docker.com/engine/reference/commandline/swarm_init/)
+- [3] - ANSI/TIA-942 : [https://en.wikipedia.org/wiki/TIA-942](https://en.wikipedia.org/wiki/TIA-942)
+- [4] - Docker service Create : [https://docs.docker.com/v17.09/engine/reference/commandline/service_create/](https://docs.docker.com/v17.09/engine/reference/commandline/service_create/)
+- [5] - Guia de creació de serveis docker : [https://docs.docker.com/engine/swarm/services/](https://docs.docker.com/engine/swarm/services/) 
+- [6] - Sharing docker images without a registry : [https://stacktoheap.com/blog/2015/11/22/sharing-docker-images-without-registry/](https://stacktoheap.com/blog/2015/11/22/sharing-docker-images-without-registry/)
